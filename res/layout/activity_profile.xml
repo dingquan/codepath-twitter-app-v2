@@ -20,7 +20,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="20dp"
-            android:contentDescription="@string/prifile_image" />
+            android:background="#FFFFFF"
+            android:contentDescription="@string/prifile_image"
+            android:padding="3dp" />
 
         <TextView
             android:id="@+id/tvUserName"
@@ -52,16 +54,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/rlHeader"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:gravity="center"
+        android:baselineAligned="false"
         android:orientation="horizontal" >
 
         <LinearLayout
             android:id="@+id/llTweetCounts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
             android:layout_weight="1"
             android:orientation="vertical" >
 
@@ -80,12 +81,17 @@
                 android:textColor="#909090" >
             </TextView>
         </LinearLayout>
-
+        
+        <View
+            android:layout_height="fill_parent"
+            android:layout_width="1dp"
+            android:background="#909090" />
+        
         <LinearLayout
             android:id="@+id/llFollowingCounts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
             android:layout_weight="1"
             android:orientation="vertical" >
 
@@ -104,12 +110,15 @@
                 android:textColor="#909090" >
             </TextView>
         </LinearLayout>
-
+        <View
+            android:layout_height="fill_parent"
+            android:layout_width="1dp"
+            android:background="#909090" />
         <LinearLayout
             android:id="@+id/llFollowerCounts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
             android:layout_weight="1"
             android:orientation="vertical" >
 
