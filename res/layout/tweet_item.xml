@@ -11,6 +11,7 @@
         android:layout_alignParentTop="true"
         android:contentDescription="@string/prifile_image"
         android:padding="5dp"
+        android:onClick="showProfile"
         android:src="@drawable/ic_launcher" />
 
     <TextView

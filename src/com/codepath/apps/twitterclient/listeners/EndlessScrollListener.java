@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.listeners;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
@@ -15,7 +16,7 @@ import com.codepath.apps.twitterclient.listeners.FragmentTabListener;
 
 public class TimelineActivity extends FragmentActivity {
 	private static final int TWEET_REQUEST_CODE = 10;
-	private static final int PROFILE_REQUEST_CODE = 20;
+//	private static final int PROFILE_REQUEST_CODE = 20;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,12 @@ public class TimelineActivity extends FragmentActivity {
     
     public void onProfile(MenuItem mi){
 		Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
-		startActivityForResult(i, PROFILE_REQUEST_CODE);
+		startActivity(i);
+    }
+    
+    public void showProfile(View v){
+    	Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
+    	startActivity(i);
     }
     
 }
