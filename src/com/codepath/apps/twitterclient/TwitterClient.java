@@ -54,26 +54,16 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
     }
     
-    public void getUserTimeline(AsyncHttpResponseHandler handler){
+    public void getUserTimeline(Long userId, AsyncHttpResponseHandler handler){
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
-//		// Can specify query string params directly or through RequestParams.
-//		RequestParams params = new RequestParams();
-//
-//		if (minId != null){
-//			if (!minId.equals(Long.MAX_VALUE)) {
-//				params.put("max_id", Long.valueOf(minId - 1).toString());
-//			}
-//			else{
-//				params.put("since_id", "1");
-//			}
-//		}
-//		if (maxId != null){
-//			params.put("since_id",  maxId.toString());
-//		}
-//		Log.d("DEBUG", "apiURl: " + apiUrl + "params: " + params.toString());
-//		client.get(apiUrl, params, handler);
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = null;
 		
-		client.get(apiUrl, null, handler);
+		if (userId != null && userId != -1L){
+			params = new RequestParams();
+			params.put("user_id", userId.toString());
+		}
+		client.get(apiUrl, params, handler);
     }
     
     public void getTweetById(String id, AsyncHttpResponseHandler handler){
@@ -93,11 +83,22 @@ public class TwitterClient extends OAuthBaseClient {
 		client.post(apiUrl, params, handler);
 	}
     
-    public void getUserProfile(AsyncHttpResponseHandler handler){
-		String apiUrl = getApiUrl("account/verify_credentials.json");
-		client.get(apiUrl, null, handler);
+    public void getUserProfile(Long userId, AsyncHttpResponseHandler handler){
+    	
+		String apiUrl = null;
+		RequestParams params = null;
+		
+		if (userId == null || userId == -1L){
+			apiUrl = getApiUrl("account/verify_credentials.json");
+		}
+		else{
+			apiUrl = getApiUrl("users/show.json");
+			params = new RequestParams();
+			params.put("user_id", userId.toString());
+		}
+		client.get(apiUrl, params, handler);
 	}
-
+    
 	public void getMentionsTimeline(Long minId, Long maxId, JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
 		// Can specify query string params directly or through RequestParams.

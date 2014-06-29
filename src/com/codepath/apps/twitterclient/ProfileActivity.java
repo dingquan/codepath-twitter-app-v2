@@ -3,10 +3,13 @@ package com.codepath.apps.twitterclient;
 import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.twitterclient.fragments.UserTimelineFragment;
 import com.codepath.apps.twitterclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,8 +29,10 @@ public class ProfileActivity extends FragmentActivity {
 		setContentView(R.layout.activity_profile);
 		
 		setupViews();
-		
-		populateProfileHeader();
+		Long userId = getIntent().getLongExtra("user_id", -1L);
+
+		populateProfileHeader(userId);
+		populateTimelineFragment(userId);
 	}
 
 	private void setupViews() {
@@ -39,8 +44,8 @@ public class ProfileActivity extends FragmentActivity {
 		tvFollowerCount = (TextView)findViewById(R.id.tvFollowerCount);
 	}
 	
-	private void populateProfileHeader(){
-		TwitterApp.getRestClient().getUserProfile(new JsonHttpResponseHandler(){
+	private void populateProfileHeader(Long userId){
+		TwitterApp.getRestClient().getUserProfile(userId, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, JSONObject json) {
 				User user = User.fromJSON(json);
@@ -59,5 +64,12 @@ public class ProfileActivity extends FragmentActivity {
 			}
 			
 		});
+	}
+	
+	private void populateTimelineFragment(Long userId){
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		UserTimelineFragment fragment = UserTimelineFragment.newInstance(userId);
+		ft.replace(R.id.flContainer, fragment);
+		ft.commit();
 	}
 }

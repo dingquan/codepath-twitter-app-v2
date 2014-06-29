@@ -139,7 +139,17 @@
         </LinearLayout>
     </LinearLayout>
 
-    <fragment
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/llCounts" >
+
+    </FrameLayout>
+<!--     <fragment
         android:id="@+id/fUserTimeline"
         android:name="com.codepath.apps.twitterclient.fragments.UserTimelineFragment"
         android:layout_width="wrap_content"
@@ -148,6 +158,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/llCounts"
-        tools:layout="@layout/fragment_tweets_list" />
+        tools:layout="@layout/fragment_tweets_list" /> -->
 
 </RelativeLayout>

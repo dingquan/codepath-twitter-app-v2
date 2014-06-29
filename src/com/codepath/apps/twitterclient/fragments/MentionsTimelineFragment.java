@@ -148,7 +148,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 	}
 	
     private void saveLoginUserProfileData(){
-		twitterClient.getUserProfile(new JsonHttpResponseHandler(){
+		twitterClient.getUserProfile(null, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, JSONObject json) {
 				User user = User.fromJSON(json);

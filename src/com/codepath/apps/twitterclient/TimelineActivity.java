@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
@@ -73,7 +74,9 @@ public class TimelineActivity extends FragmentActivity {
     }
     
     public void showProfile(View v){
+    	Long userId = (Long)((ImageView)v).getTag();
     	Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
+    	i.putExtra("user_id", userId);
     	startActivity(i);
     }
     

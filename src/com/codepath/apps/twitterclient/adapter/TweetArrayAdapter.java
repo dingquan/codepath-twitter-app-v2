@@ -41,6 +41,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		TextView tvBody = (TextView)v.findViewById(R.id.tvBody);
 		TextView tvTimeStamp = (TextView)v.findViewById(R.id.tvTimeStamp);
 		ivProfileImage.setImageResource(android.R.color.transparent);
+		ivProfileImage.setTag(tweet.getUserId());
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		
 		imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
