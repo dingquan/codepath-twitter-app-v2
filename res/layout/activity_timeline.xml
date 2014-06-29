@@ -4,13 +4,24 @@
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
 
-    <eu.erikw.PullToRefreshListView
-        android:id="@+id/lvTweets"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true" >
+    </FrameLayout>
 
+<!--     <fragment
+        android:id="@+id/fragment_timeline"
+        android:name="com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        tools:layout="@layout/fragment_tweets_list" />
+ -->
 </RelativeLayout>
