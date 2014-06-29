@@ -93,7 +93,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 			public void onSuccess(int statusCode, JSONArray json) {
 				List<Tweet> newTweets = Tweet.fromJSONArray(json);
 				//want to keep the new tweets at the front, so we do this swap
-				saveTweets(newTweets);
+				Tweet.saveAll(newTweets);
 				newTweets.addAll(tweets);
 				tweets = newTweets;
 				aTweets.notifyDataSetChanged();
@@ -127,7 +127,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 			@Override
 			public void onSuccess(int statusCode, JSONArray json) {
 				List<Tweet> newTweets = Tweet.fromJSONArray(json);
-				saveTweets(newTweets);
+				Tweet.saveAll(newTweets);
 				aTweets.addAll(newTweets);
 			}
 			
@@ -163,9 +163,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
 		});
     }
 
-	private void saveTweets(List<Tweet> tweets){
-		Tweet.saveAll(tweets);
-	}
 	
 	public void postTweet(String tweetStr){
 		twitterClient.postTweet(tweetStr, new JsonHttpResponseHandler(){

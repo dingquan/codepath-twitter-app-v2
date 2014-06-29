@@ -2,14 +2,20 @@ package com.codepath.apps.twitterclient;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
 import com.codepath.apps.twitterclient.listeners.FragmentTabListener;
 
 public class TimelineActivity extends FragmentActivity {
+	private static final int TWEET_REQUEST_CODE = 10;
+	private static final int PROFILE_REQUEST_CODE = 20;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,4 +52,23 @@ public class TimelineActivity extends FragmentActivity {
 
 		actionBar.addTab(tab2);
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_timeline, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    
+    public void composeTweet(MenuItem mi){
+		Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+		startActivityForResult(i, TWEET_REQUEST_CODE);
+    }
+    
+    public void onProfile(MenuItem mi){
+		Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
+		startActivityForResult(i, PROFILE_REQUEST_CODE);
+    }
+    
 }

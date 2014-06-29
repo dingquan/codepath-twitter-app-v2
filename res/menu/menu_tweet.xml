@@ -4,7 +4,6 @@
     <item
         android:id="@+id/remain_count"
         android:menuCategory="system"
-        android:onClick="postTweet"
         android:showAsAction="ifRoom|withText"
         android:title="140"/>
     <item

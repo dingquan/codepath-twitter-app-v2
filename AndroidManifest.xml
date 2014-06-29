@@ -25,8 +25,7 @@
             android:name="AA_DB_VERSION"
             android:value="1" />
 
-        <activity
-            android:name="com.codepath.apps.twitterclient.LoginActivity">
+        <activity android:name="com.codepath.apps.twitterclient.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +45,10 @@
         <activity android:name="com.codepath.apps.twitterclient.TimelineActivity" >
         </activity>
         <activity android:name="com.codepath.apps.twitterclient.ComposeActivity" >
+        </activity>
+        <activity
+            android:name="com.codepath.apps.twitterclient.ProfileActivity"
+            android:label="@string/title_activity_profile" >
         </activity>
     </application>
 

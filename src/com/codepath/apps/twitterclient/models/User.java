@@ -15,11 +15,17 @@ public class User extends Model {
 	@Column
 	private String name;
 	@Column(unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-	private long uid;
+	private Long uid;
 	@Column
 	private String screenName;
 	@Column
 	private String profileImageUrl;
+	@Column
+	private Integer followersCount;
+	@Column
+	private Integer friendsCount;
+	@Column
+	private Integer statusesCount;
 
 	public static User fromJSON(JSONObject json) {
 		User user = new User();
@@ -28,6 +34,9 @@ public class User extends Model {
 			user.uid = json.getLong("id");
 			user.screenName = json.getString("screen_name");
 			user.profileImageUrl = json.getString("profile_image_url");
+			user.followersCount = json.getInt("followers_count");
+			user.friendsCount = json.getInt("friends_count");
+			user.statusesCount = json.getInt("statuses_count");
 		}catch(JSONException e){
 			e.printStackTrace();
 			return null;
@@ -49,6 +58,18 @@ public class User extends Model {
 
 	public String getProfileImageUrl() {
 		return profileImageUrl;
+	}
+
+	public Integer getFollowersCount() {
+		return followersCount;
+	}
+
+	public Integer getFriendsCount() {
+		return friendsCount;
+	}
+
+	public Integer getStatusesCount() {
+		return statusesCount;
 	}
 
 	public static User findById(Long id){

@@ -8,4 +8,11 @@
         android:title="@string/compose">
     </item>    
 
+    <item android:id="@+id/action_profile"
+        android:icon="@drawable/ic_action_profile"
+        android:onClick="onProfile"
+        android:menuCategory="system"
+        android:showAsAction="ifRoom"
+        android:title="@string/profile">
+    </item> 
 </menu>

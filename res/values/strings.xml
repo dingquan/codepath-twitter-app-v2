@@ -12,5 +12,11 @@
     <string name="reply">Reply</string>
     <string name="retweet">Retweet</string>
     <string name="favorite">Favorite</string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="label_tweets">TWEETS</string>
+    <string name="label_following">FOLLOWING</string>
+    <string name="label_followers">FOLLOWERS</string>
 
 </resources>
