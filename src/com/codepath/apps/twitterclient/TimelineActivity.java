@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,15 +26,13 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends FragmentActivity {
 	private static final int REQUEST_CODE = 10;
-	private static final String HOME_TIMELINE_FRAGMENT_TAG = "HomeTimelineFragment";
-	private static final String MENTIONS_TIMELINE_FRAGMENT_TAG = "MentionsTimelineFragment";
 	
 	protected TwitterClient twitterClient;
 	protected HomeTimelineFragment homeTimelineFragment;
 	protected MentionsTimelineFragment mentionsTimelineFragment;
 	
 	private SharedPreferences prefs;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class TimelineActivity extends FragmentActivity {
 			.newTab()
 			.setText("Home")
 			.setIcon(R.drawable.ic_action_home)
-			.setTag(HOME_TIMELINE_FRAGMENT_TAG)
+			.setTag("HomeTimelineFragment")
 			.setTabListener(
 				new FragmentTabListener<HomeTimelineFragment>(R.id.flContainer, this, "Home",
 						HomeTimelineFragment.class));
@@ -65,7 +65,7 @@ public class TimelineActivity extends FragmentActivity {
 			.newTab()
 			.setText("Mentions")
 			.setIcon(R.drawable.ic_action_notification)
-			.setTag(MENTIONS_TIMELINE_FRAGMENT_TAG)
+			.setTag("MentionsTimelineFragment")
 			.setTabListener(
 			    new FragmentTabListener<MentionsTimelineFragment>(R.id.flContainer, this, "Metions",
 			    		MentionsTimelineFragment.class));
@@ -107,6 +107,10 @@ public class TimelineActivity extends FragmentActivity {
     }
     
 	private void saveLoginUserProfileData() {
+		Long userId = prefs.getLong("userId", -1L);
+		if (userId != -1L) //saved before, no need to fetch again
+			return;
+		
 		twitterClient.getUserProfile(null, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, JSONObject json) {
@@ -128,7 +132,8 @@ public class TimelineActivity extends FragmentActivity {
 			@Override
 			public void onSuccess(int statusCode, JSONObject json) {
 				Tweet tweet = Tweet.fromJSON(json);
-//				aTweets.insert(tweet, 0);
+				findFragments();
+				homeTimelineFragment.insertTweetToTop(tweet);
 			}
 			
 			@Override
@@ -136,5 +141,13 @@ public class TimelineActivity extends FragmentActivity {
 				super.onFailure(e, s);
 			}
 		});
+	}
+	
+	private void findFragments(){
+		if (homeTimelineFragment == null){
+			FragmentManager fm = getSupportFragmentManager();
+			fm.executePendingTransactions();
+			homeTimelineFragment = (HomeTimelineFragment) fm.findFragmentByTag("Home");
+		}
 	}
 }

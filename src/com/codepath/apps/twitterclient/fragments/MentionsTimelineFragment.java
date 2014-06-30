@@ -19,19 +19,9 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 public class MentionsTimelineFragment extends TweetsListFragment {
 
-	private Long minId = Long.MAX_VALUE;
-	private Long maxId = 1L;
-	
 	@Override
 	protected void refreshTimeline(){
-		if (aTweets.getCount() > 0){
-			minId = aTweets.getItem(aTweets.getCount()-1).getUid(); 
-			maxId = aTweets.getItem(0).getUid();
-		}
-		else{
-			minId = Long.MAX_VALUE;
-			maxId = 1L;
-		}
+		findMinMaxId();
 		twitterClient.getMentionsTimeline(null, maxId, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, JSONArray json) {
@@ -59,14 +49,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
 	@Override
 	protected void fetchMoreTimeline(){
-		if (aTweets.getCount() > 0){
-			minId = aTweets.getItem(aTweets.getCount()-1).getUid(); 
-			maxId = aTweets.getItem(0).getUid();
-		}
-		else{
-			minId = Long.MAX_VALUE;
-			maxId = 1L;
-		}
+		findMinMaxId();
 		twitterClient.getMentionsTimeline(minId, null, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, JSONArray json) {

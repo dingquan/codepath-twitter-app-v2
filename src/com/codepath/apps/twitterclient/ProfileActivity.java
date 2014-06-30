@@ -69,7 +69,7 @@ public class ProfileActivity extends FragmentActivity {
 	private void populateTimelineFragment(Long userId){
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		UserTimelineFragment fragment = UserTimelineFragment.newInstance(userId);
-		ft.replace(R.id.flContainer, fragment);
+		ft.replace(R.id.flContainer, fragment, "profileFragment");
 //		ft.addToBackStack("");
 		ft.commit();
 	}

@@ -28,6 +28,10 @@ public class TweetsListFragment extends Fragment {
 	
 	protected TwitterClient twitterClient;
 	
+	protected Long minId = Long.MAX_VALUE;
+	protected Long maxId = 1L;
+
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -51,10 +55,6 @@ public class TweetsListFragment extends Fragment {
 		aTweets = new TweetArrayAdapter(getActivity(), tweets);
 
 		twitterClient = TwitterApp.getRestClient();
-	}
-
-	public void adAll(ArrayList<Tweet> tweets){
-		aTweets.addAll(tweets);
 	}
 
 	private void setupHandlers(){
@@ -89,5 +89,22 @@ public class TweetsListFragment extends Fragment {
 	protected void refreshTimeline() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	protected void findMinMaxId(){
+		minId = Long.MAX_VALUE;
+		maxId = 1L;
+
+		if (aTweets.getCount() > 0){
+			for (Tweet tweet : tweets){
+				Long uid = tweet.getUid();
+				if (uid < minId){
+					minId = uid;
+				}
+				if (uid > maxId){
+					maxId = uid;
+				}
+			}
+		}
 	}
 }
