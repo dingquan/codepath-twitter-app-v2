@@ -14,9 +14,11 @@ import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TwitterApp;
 import com.codepath.apps.twitterclient.TwitterClient;
 import com.codepath.apps.twitterclient.adapter.TweetArrayAdapter;
+import com.codepath.apps.twitterclient.listeners.EndlessScrollListener;
 import com.codepath.apps.twitterclient.models.Tweet;
 
 import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 public class TweetsListFragment extends Fragment {
 
@@ -35,6 +37,8 @@ public class TweetsListFragment extends Fragment {
 		lvTweets = (PullToRefreshListView)v.findViewById(R.id.lvTweets);
 		lvTweets.setAdapter(aTweets);
 
+		setupHandlers();
+		
 		//return view
 		return v;
 	}
@@ -53,4 +57,37 @@ public class TweetsListFragment extends Fragment {
 		aTweets.addAll(tweets);
 	}
 
+	private void setupHandlers(){
+		lvTweets.setOnRefreshListener(new OnRefreshListener(){
+
+			@Override
+			public void onRefresh() {
+				refreshTimeline();
+			}
+			
+		});
+		
+		lvTweets.setOnScrollListener(new EndlessScrollListener(){
+
+			@Override
+			public void onLoadMore(int page, int totalItemsCount) {
+				// Triggered only when new data needs to be appended to the list
+				// Add whatever code is needed to append new items to your
+				// AdapterView
+				fetchMoreTimeline();
+			}
+			
+		});
+
+	}
+
+	protected void fetchMoreTimeline() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void refreshTimeline() {
+		// TODO Auto-generated method stub
+		
+	}
 }
