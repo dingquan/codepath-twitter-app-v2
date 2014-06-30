@@ -30,8 +30,11 @@ public class TweetsListFragment extends Fragment {
 	
 	protected Long minId = Long.MAX_VALUE;
 	protected Long maxId = 1L;
-
 	
+	// Store instance variables
+	protected String title;
+	protected int page;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class TweetsListFragment extends Fragment {
 		aTweets = new TweetArrayAdapter(getActivity(), tweets);
 
 		twitterClient = TwitterApp.getRestClient();
+		
 	}
 
 	private void setupHandlers(){

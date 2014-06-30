@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
 
-    <FrameLayout
+    <!--
+         <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,8 +14,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
     </FrameLayout>
+    -->
 
-<!--     <fragment
+
+    <!--
+         <fragment
         android:id="@+id/fragment_timeline"
         android:name="com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment"
         android:layout_width="wrap_content"
@@ -23,5 +27,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         tools:layout="@layout/fragment_tweets_list" />
- -->
+    -->
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pager_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp" />
+    </android.support.v4.view.ViewPager>
+
 </RelativeLayout>

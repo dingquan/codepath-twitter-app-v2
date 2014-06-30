@@ -18,14 +18,30 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 public class HomeTimelineFragment extends TweetsListFragment {
+	
+	// newInstance constructor for creating fragment with arguments
+	public static HomeTimelineFragment newInstance(int page, String title) {
+		HomeTimelineFragment homeFragment = new HomeTimelineFragment();
+		Bundle args = new Bundle();
+		args.putInt("someInt", page);
+		args.putString("someTitle", title);
+		homeFragment.setArguments(args);
+		return homeFragment;
+	}
+	
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		page = getArguments().getInt("someInt", 0);
+		title = getArguments().getString("someTitle");
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
-		
 		fetchingSavedTweets();
-		
 		return v;
 	}
 	

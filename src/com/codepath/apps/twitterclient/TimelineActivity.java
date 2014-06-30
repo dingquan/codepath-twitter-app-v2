@@ -2,8 +2,6 @@ package com.codepath.apps.twitterclient;
 
 import org.json.JSONObject;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +19,6 @@ import android.widget.ImageView;
 
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
-import com.codepath.apps.twitterclient.listeners.FragmentTabListener;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -29,57 +28,60 @@ public class TimelineActivity extends FragmentActivity {
 	
 	protected TwitterClient twitterClient;
 	protected HomeTimelineFragment homeTimelineFragment;
-	protected MentionsTimelineFragment mentionsTimelineFragment;
-	
 	private SharedPreferences prefs;
+	private ViewPager vpPager;
+	private FragmentPagerAdapter adapterViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timeline);
 		
+		vpPager = (ViewPager) findViewById(R.id.vpPager);
+		adapterViewPager = new PagerAdapter(getSupportFragmentManager());
+		vpPager.setAdapter(adapterViewPager);
+		
 		prefs = this.getSharedPreferences("com.codepath.twitterclient", Context.MODE_PRIVATE);
-		setupTabs();
+		//setupTabs();
 		twitterClient = TwitterApp.getRestClient();
 		saveLoginUserProfileData();
 	}
 	
-	private void setupTabs() {
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayShowTitleEnabled(true);
+//	private void setupTabs() {
+//		ActionBar actionBar = getActionBar();
+//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//		actionBar.setDisplayShowTitleEnabled(true);
+//
+//		Tab tab1 = actionBar
+//			.newTab()
+//			.setText("Home")
+//			.setIcon(R.drawable.ic_action_home)
+//			.setTag("HomeTimelineFragment")
+//			.setTabListener(
+//				new FragmentTabListener<HomeTimelineFragment>(R.id.flContainer, this, "Home",
+//						HomeTimelineFragment.class));
+//
+//		actionBar.addTab(tab1);
+//		actionBar.selectTab(tab1);
+//
+//		Tab tab2 = actionBar
+//			.newTab()
+//			.setText("Mentions")
+//			.setIcon(R.drawable.ic_action_notification)
+//			.setTag("MentionsTimelineFragment")
+//			.setTabListener(
+//			    new FragmentTabListener<MentionsTimelineFragment>(R.id.flContainer, this, "Metions",
+//			    		MentionsTimelineFragment.class));
+//
+//		actionBar.addTab(tab2);
+//	}
 
-		Tab tab1 = actionBar
-			.newTab()
-			.setText("Home")
-			.setIcon(R.drawable.ic_action_home)
-			.setTag("HomeTimelineFragment")
-			.setTabListener(
-				new FragmentTabListener<HomeTimelineFragment>(R.id.flContainer, this, "Home",
-						HomeTimelineFragment.class));
-
-		actionBar.addTab(tab1);
-		actionBar.selectTab(tab1);
-
-		Tab tab2 = actionBar
-			.newTab()
-			.setText("Mentions")
-			.setIcon(R.drawable.ic_action_notification)
-			.setTag("MentionsTimelineFragment")
-			.setTabListener(
-			    new FragmentTabListener<MentionsTimelineFragment>(R.id.flContainer, this, "Metions",
-			    		MentionsTimelineFragment.class));
-
-		actionBar.addTab(tab2);
-	}
-	
-    @Override
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_timeline, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    
     
     public void composeTweet(MenuItem mi){
 		Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
@@ -145,9 +147,49 @@ public class TimelineActivity extends FragmentActivity {
 	
 	private void findFragments(){
 		if (homeTimelineFragment == null){
-			FragmentManager fm = getSupportFragmentManager();
-			fm.executePendingTransactions();
-			homeTimelineFragment = (HomeTimelineFragment) fm.findFragmentByTag("Home");
+//			FragmentManager fm = getSupportFragmentManager();
+//			fm.executePendingTransactions();
+//			homeTimelineFragment = (HomeTimelineFragment) fm.findFragmentByTag("Home");
+
+			homeTimelineFragment = (HomeTimelineFragment) adapterViewPager.getItem(0);
 		}
 	}
+	
+	public static class PagerAdapter extends FragmentPagerAdapter {
+		private static int NUM_ITEMS = 2;
+
+		public PagerAdapter(FragmentManager fragmentManager) {
+			super(fragmentManager);
+		}
+
+		// Returns total number of pages
+		@Override
+		public int getCount() {
+			return NUM_ITEMS;
+		}
+
+		// Returns the fragment to display for that page
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+			case 0:
+				return HomeTimelineFragment.newInstance(0, "Home");
+			case 1: 
+				return MentionsTimelineFragment.newInstance(1, "Mentions");
+			default:
+				return null;
+			}
+		}
+
+		// Returns the page title for the top indicator
+		@Override
+		public CharSequence getPageTitle(int position) {
+			if (position == 0)
+				return "Home";
+			else
+				return "@Mentions";
+		}
+
+	}
+
 }

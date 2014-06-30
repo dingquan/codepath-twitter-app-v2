@@ -20,6 +20,23 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
 public class MentionsTimelineFragment extends TweetsListFragment {
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		page = getArguments().getInt("someInt", 0);
+		title = getArguments().getString("someTitle");
+	}
+	
+	// newInstance constructor for creating fragment with arguments
+	public static MentionsTimelineFragment newInstance(int page, String title) {
+		MentionsTimelineFragment mentionsFagment = new MentionsTimelineFragment();
+		Bundle args = new Bundle();
+		args.putInt("someInt", page);
+		args.putString("someTitle", title);
+		mentionsFagment.setArguments(args);
+		return mentionsFagment;
+	}
+	
+	@Override
 	protected void refreshTimeline(){
 		findMinMaxId();
 		twitterClient.getMentionsTimeline(null, maxId, new JsonHttpResponseHandler(){
