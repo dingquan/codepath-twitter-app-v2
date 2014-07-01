@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.codepath.apps.twitterclient.listeners.EndlessScrollListener;
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -46,6 +47,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 	}
 	
 	private void fetchingSavedTweets(){
+		pbLoading.setVisibility(ProgressBar.VISIBLE);
 		List<Tweet> savedTweets = Tweet.findAll();
 		if (savedTweets != null && !savedTweets.isEmpty()){
 			for (Tweet tweet : savedTweets){
@@ -54,6 +56,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 			}
 			aTweets.addAll(savedTweets);
 		}
+		pbLoading.setVisibility(ProgressBar.INVISIBLE);
 	}
 	
 	@Override
@@ -88,6 +91,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 	@Override
 	protected void fetchMoreTimeline(){
 		findMinMaxId();
+		pbLoading.setVisibility(ProgressBar.VISIBLE);
 		twitterClient.getHomeTimeline(minId, null, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, JSONArray json) {
@@ -103,9 +107,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
 			
 			@Override
 			public void onFinish() {
-                // ...the data has come back, finish populating listview...
-                // Now we call onRefreshComplete to signify refresh has finished
-                lvTweets.onRefreshComplete();
+                pbLoading.setVisibility(ProgressBar.INVISIBLE);;
 				super.onFinish();
 			}
 		});

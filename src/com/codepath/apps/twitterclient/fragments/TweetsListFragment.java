@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TwitterApp;
@@ -25,6 +26,7 @@ public class TweetsListFragment extends Fragment {
 	protected List<Tweet> tweets;
 	protected ArrayAdapter<Tweet> aTweets;
 	protected PullToRefreshListView lvTweets;
+	protected ProgressBar pbLoading;
 	
 	protected TwitterClient twitterClient;
 	
@@ -43,6 +45,9 @@ public class TweetsListFragment extends Fragment {
 		
 		lvTweets = (PullToRefreshListView)v.findViewById(R.id.lvTweets);
 		lvTweets.setAdapter(aTweets);
+		
+		pbLoading = (ProgressBar)v.findViewById(R.id.pbLoading);
+		pbLoading.setVisibility(ProgressBar.INVISIBLE);
 
 		setupHandlers();
 		

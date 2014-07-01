@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.codepath.apps.twitterclient.listeners.EndlessScrollListener;
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -67,6 +68,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 	@Override
 	protected void fetchMoreTimeline(){
 		findMinMaxId();
+		pbLoading.setVisibility(ProgressBar.VISIBLE);
 		twitterClient.getMentionsTimeline(minId, null, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, JSONArray json) {
@@ -81,9 +83,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 			
 			@Override
 			public void onFinish() {
-                // ...the data has come back, finish populating listview...
-                // Now we call onRefreshComplete to signify refresh has finished
-                lvTweets.onRefreshComplete();
+                pbLoading.setVisibility(ProgressBar.INVISIBLE);
 				super.onFinish();
 			}
 		});
