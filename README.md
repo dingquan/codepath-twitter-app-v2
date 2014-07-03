@@ -1,4 +1,4 @@
-codepath-twitter-app
+codepath-twitter-app-v2
 =======================
 
 Google Image Search Project
