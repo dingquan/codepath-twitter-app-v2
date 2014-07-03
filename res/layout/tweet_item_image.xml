@@ -61,11 +61,17 @@
 
     <ImageView
         android:id="@+id/ivTweetImage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvBody"
         android:layout_below="@+id/tvBody"
-        android:padding="5dp"
+        android:layout_alignLeft="@+id/tvBody"
+        android:layout_alignRight="@+id/tvTimeStamp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
         android:src="@drawable/ic_launcher" />
 
     <LinearLayout
