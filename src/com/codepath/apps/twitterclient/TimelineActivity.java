@@ -16,7 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.codepath.apps.twitterclient.adapter.TweetArrayAdapter;
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -40,6 +42,8 @@ public class TimelineActivity extends FragmentActivity {
 		vpPager = (ViewPager) findViewById(R.id.vpPager);
 		adapterViewPager = new PagerAdapter(getSupportFragmentManager());
 		vpPager.setAdapter(adapterViewPager);
+		
+		homeTimelineFragment = (HomeTimelineFragment) adapterViewPager.getItem(0);
 		
 		prefs = this.getSharedPreferences("com.codepath.twitterclient", Context.MODE_PRIVATE);
 		//setupTabs();
@@ -108,6 +112,84 @@ public class TimelineActivity extends FragmentActivity {
     	startActivity(i);
     }
     
+    public void onFavorite(View v){
+    	ImageView ivFavorite = (ImageView) v;
+    	Object[] tagObjs = (Object[])ivFavorite.getTag();
+    	Integer position = (Integer)tagObjs[0];
+    	Tweet tweet = (Tweet)tagObjs[1];
+    	if (tweet.getFavorated() == true){
+    		tweet.setFavorited(false);
+    		tweet.setFavoriteCount(tweet.getFavoriteCount() - 1);
+    		ivFavorite.setImageResource(R.drawable.ic_favorite);
+    		twitterClient.unfavoriteTweet(tweet.getUid(), new JsonHttpResponseHandler(){
+    			@Override
+    			public void onSuccess(int statusCode, JSONObject json) {
+    				Tweet tweet = Tweet.fromJSON(json);
+    				tweet.save();
+    			}
+
+    			@Override
+    			public void onFailure(Throwable e, String s) {
+    				super.onFailure(e, s);
+    			}
+    		});
+    	}
+    	else{
+    		tweet.setFavorited(true);
+    		tweet.setFavoriteCount(tweet.getFavoriteCount() + 1);
+    		ivFavorite.setImageResource(R.drawable.ic_unfavorite);
+    		twitterClient.unfavoriteTweet(tweet.getUid(), new JsonHttpResponseHandler(){
+    			@Override
+    			public void onSuccess(int statusCode, JSONObject json) {
+    				Tweet tweet = Tweet.fromJSON(json);
+    				tweet.save();
+    			}
+
+    			@Override
+    			public void onFailure(Throwable e, String s) {
+    				super.onFailure(e, s);
+    			}
+    		});
+    	}
+    	homeTimelineFragment.updateTweet(position, tweet);
+    }
+    
+    public void onRetweet(View v){
+    	Tweet tweet = (Tweet)v.getTag();
+    	Toast.makeText(this, "retweet " + tweet.getUid(), Toast.LENGTH_SHORT).show();
+    	twitterClient.retweet(tweet.getUid(), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, JSONObject json) {
+				Tweet tweet = Tweet.fromJSON(json);
+				tweet.save();
+				homeTimelineFragment.insertTweetToTop(tweet);
+			}
+
+			@Override
+			public void onFailure(Throwable e, String s) {
+				super.onFailure(e, s);
+			}
+
+		});
+	}
+    
+    public void onReply(View v){
+    	Tweet tweet = (Tweet)v.getTag();
+		twitterClient.replyTweet("haha", tweet, new JsonHttpResponseHandler(){
+			@Override
+			public void onSuccess(int statusCode, JSONObject json) {
+				Tweet tweet = Tweet.fromJSON(json);
+				homeTimelineFragment.insertTweetToTop(tweet);
+			}
+			
+			@Override
+			public void onFailure(Throwable e, String s) {
+				super.onFailure(e, s);
+			}
+		});
+    	
+    }
+    
 	private void saveLoginUserProfileData() {
 		Long userId = prefs.getLong("userId", -1L);
 		if (userId != -1L) //saved before, no need to fetch again
@@ -134,7 +216,7 @@ public class TimelineActivity extends FragmentActivity {
 			@Override
 			public void onSuccess(int statusCode, JSONObject json) {
 				Tweet tweet = Tweet.fromJSON(json);
-				findFragments();
+				tweet.save();
 				homeTimelineFragment.insertTweetToTop(tweet);
 			}
 			
@@ -143,16 +225,6 @@ public class TimelineActivity extends FragmentActivity {
 				super.onFailure(e, s);
 			}
 		});
-	}
-	
-	private void findFragments(){
-		if (homeTimelineFragment == null){
-//			FragmentManager fm = getSupportFragmentManager();
-//			fm.executePendingTransactions();
-//			homeTimelineFragment = (HomeTimelineFragment) fm.findFragmentByTag("Home");
-
-			homeTimelineFragment = (HomeTimelineFragment) adapterViewPager.getItem(0);
-		}
 	}
 	
 	public static class PagerAdapter extends FragmentPagerAdapter {

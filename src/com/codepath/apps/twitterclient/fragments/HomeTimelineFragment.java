@@ -118,4 +118,9 @@ public class HomeTimelineFragment extends TweetsListFragment {
 		lvTweets.smoothScrollToPosition(0);
 	}
 	
+	public void updateTweet(int position, Tweet tweet){
+		tweets.set(position, tweet);
+		aTweets.notifyDataSetChanged();
+	}
+	
 }

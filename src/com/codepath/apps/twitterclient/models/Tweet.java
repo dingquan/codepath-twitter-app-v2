@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
@@ -21,6 +22,8 @@ import com.activeandroid.query.Select;
 
 @Table(name="tweets")
 public class Tweet extends Model{
+	public enum TYPE {TEXT, IMAGE, VIDEO};
+	
 	@Column
 	private String body;
 	@Column(unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
@@ -31,6 +34,16 @@ public class Tweet extends Model{
 	private User user;
 	@Column
 	private Long userId;
+	@Column
+	private Long retweetCount;
+	@Column
+	private Boolean favorated;
+	@Column
+	private Long favoriteCount;
+	@Column
+	private TYPE type = TYPE.TEXT;
+	@Column
+	private String imageUrl;
 
 	public static Tweet fromJSON(JSONObject json){
 		Tweet tweet = new Tweet();
@@ -40,6 +53,14 @@ public class Tweet extends Model{
 			tweet.createdAt = json.getString("created_at");
 			tweet.user = User.fromJSON(json.getJSONObject("user"));
 			tweet.userId = tweet.user.getUid();
+			tweet.retweetCount = json.getLong("retweet_count");
+			tweet.favorated = json.getBoolean("favorited");
+			tweet.favoriteCount = json.getLong("favorite_count");
+			tweet.imageUrl = getMediaUrl(json);
+			if (!tweet.imageUrl.isEmpty()){
+				tweet.type = TYPE.IMAGE;
+			}
+			Log.d("DEBUG", "### Tweet, imageUrl: " + tweet.imageUrl + ", type: " + tweet.getType());
 		}catch(JSONException e){
 			e.printStackTrace();
 			return null;
@@ -67,30 +88,21 @@ public class Tweet extends Model{
 		return tweets;
 	}
 	
-	public String getBody() {
-		return body;
+	private static String getMediaUrl(JSONObject json){
+		try {
+			JSONObject entities = json.getJSONObject("entities");
+			if (entities.has("media")){
+				JSONObject media = entities.getJSONArray("media").getJSONObject(0);
+				if (media.has("media_url")){
+					return media.getString("media_url");
+				}
+			}
+		} catch (JSONException e) {
+			Log.e("Tweet", e.getMessage(), e);
+		}
+		return "";
 	}
 
-	public long getUid() {
-		return uid;
-	}
-
-	public String getCreatedAt() {
-		return createdAt;
-	}
-
-	public User getUser() {
-		return user;
-	}
-	
-	public void setUser(User user){
-		this.user = user;
-	}
-	
-	public Long getUserId(){
-		return userId;
-	}
-	
 	public String toString(){
 		return body;
 	}
@@ -131,5 +143,57 @@ public class Tweet extends Model{
 		} finally {
 			ActiveAndroid.endTransaction();
 		}
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public Long getUid() {
+		return uid;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user){
+		this.user = user;
+	}
+	
+	public Long getUserId(){
+		return userId;
+	}
+	
+	public Long getRetweetCount() {
+		return retweetCount;
+	}
+
+	public Boolean getFavorated() {
+		return favorated;
+	}
+	
+	public void setFavorited(Boolean favorited){
+		this.favorated = favorited;
+	}
+
+	public Long getFavoriteCount() {
+		return favoriteCount;
+	}
+	
+	public void setFavoriteCount(Long favoriteCount){
+		this.favoriteCount = favoriteCount;
+	}
+
+	public TYPE getType() {
+		return type;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
 	}
 }

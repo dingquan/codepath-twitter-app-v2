@@ -10,8 +10,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/prifile_image"
-        android:padding="5dp"
         android:onClick="showProfile"
+        android:padding="5dp"
         android:src="@drawable/ic_launcher" />
 
     <TextView
@@ -59,20 +59,29 @@
         android:text="time"
         android:textColor="#909090" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+    <ImageView
+        android:id="@+id/ivTweetImage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tvBody"
         android:layout_below="@+id/tvBody"
-        android:gravity="center">
+        android:padding="5dp"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvBody"
+        android:layout_below="@+id/ivTweetImage"
+        android:gravity="center"
+        android:orientation="horizontal" >
 
         <ImageView
             android:id="@+id/ivReply"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:contentDescription="@string/reply"
             android:layout_weight="1"
+            android:contentDescription="@string/reply"
             android:onClick="onReply"
             android:src="@drawable/ic_reply" />
 
@@ -86,8 +95,8 @@
             android:id="@+id/ivRetweet"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:contentDescription="@string/retweet"
             android:layout_weight="1"
+            android:contentDescription="@string/retweet"
             android:onClick="onRetweet"
             android:src="@drawable/ic_retweet" />
 
@@ -97,8 +106,8 @@
             android:layout_height="20dp"
             android:layout_weight="1"
             android:text="10"
-            android:textColor="#909090"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#909090" />
 
         <TextView
             android:id="@+id/tvSpacer2"
@@ -110,8 +119,8 @@
             android:id="@+id/ivFavorite"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:contentDescription="@string/favorite"
             android:layout_weight="1"
+            android:contentDescription="@string/favorite"
             android:onClick="onFavorite"
             android:src="@drawable/ic_favorite" />
 
@@ -121,9 +130,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="3"
-            android:textColor="#909090"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#909090" />
     </LinearLayout>
 
 </RelativeLayout>
