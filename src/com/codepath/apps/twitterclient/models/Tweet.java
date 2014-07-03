@@ -44,9 +44,12 @@ public class Tweet extends Model{
 	private TYPE type = TYPE.TEXT;
 	@Column
 	private String imageUrl;
+	@Column
+	private String videoUrl;
 
 	public static Tweet fromJSON(JSONObject json){
 		Tweet tweet = new Tweet();
+		Log.d("DEBUG", "###: " + json.toString());
 		try{
 			tweet.body = json.getString("text");
 			tweet.uid = json.getLong("id");
@@ -56,11 +59,16 @@ public class Tweet extends Model{
 			tweet.retweetCount = json.getLong("retweet_count");
 			tweet.favorated = json.getBoolean("favorited");
 			tweet.favoriteCount = json.getLong("favorite_count");
-			tweet.imageUrl = getMediaUrl(json);
+			tweet.imageUrl = getImageUrl(json);
 			if (!tweet.imageUrl.isEmpty()){
 				tweet.type = TYPE.IMAGE;
 			}
+			tweet.videoUrl = getVideoUrl(json);
+//			if (!tweet.videoUrl.isEmpty()){
+//				tweet.type = TYPE.VIDEO;
+//			}
 			Log.d("DEBUG", "### Tweet, imageUrl: " + tweet.imageUrl + ", type: " + tweet.getType());
+			Log.d("DEBUG", "### Tweet, videoUrl: " + tweet.videoUrl + ", type: " + tweet.getType());
 		}catch(JSONException e){
 			e.printStackTrace();
 			return null;
@@ -88,7 +96,7 @@ public class Tweet extends Model{
 		return tweets;
 	}
 	
-	private static String getMediaUrl(JSONObject json){
+	private static String getImageUrl(JSONObject json){
 		try {
 			JSONObject entities = json.getJSONObject("entities");
 			if (entities.has("media")){
@@ -103,6 +111,19 @@ public class Tweet extends Model{
 		return "";
 	}
 
+	private static String getVideoUrl(JSONObject json){
+		try {
+			JSONArray urls = json.getJSONObject("entities").getJSONArray("urls");
+			if (urls.length() > 0){
+				String url = urls.getJSONObject(0).getString("display_url");
+				Log.d("DEBUG", "### video url: " + url);
+				return url;
+			}
+		} catch (JSONException e) {
+			Log.e("Tweet", e.getMessage(), e);
+		}
+		return "";
+	}
 	public String toString(){
 		return body;
 	}
@@ -195,5 +216,9 @@ public class Tweet extends Model{
 
 	public String getImageUrl() {
 		return imageUrl;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
 	}
 }

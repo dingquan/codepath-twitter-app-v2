@@ -3,6 +3,7 @@ package com.codepath.apps.twitterclient.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.R.id;
-import com.codepath.apps.twitterclient.R.layout;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -83,7 +83,11 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			ImageView ivTweetImage = (ImageView)v.findViewById(R.id.ivTweetImage);
 			imageLoader.displayImage(tweet.getImageUrl(), ivTweetImage);
 		}
-		
+		else if (tweet.getType().equals(Tweet.TYPE.VIDEO)){
+			VideoView vvTweetVideo = (VideoView)v.findViewById(R.id.vvTweetVideo);
+			Uri url = Uri.parse(tweet.getVideoUrl());
+			vvTweetVideo.setVideoURI(url);
+		}
 		return v;
 	}
 	
